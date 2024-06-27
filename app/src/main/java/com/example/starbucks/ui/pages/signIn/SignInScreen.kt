@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,10 @@ import com.example.starbucks.R
 import com.example.starbucks.ui.components.TextFieldInput
 
 @Composable
-fun SignInScreen() {
+fun SignInScreen(
+    onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit
+) {
     val (email, setEmail) = rememberSaveable {
         mutableStateOf("")
     }
@@ -74,14 +79,18 @@ fun SignInScreen() {
             textAlign = TextAlign.Justify
         )
         TextFieldInput(
+            modifier = Modifier.fillMaxWidth(),
             value = email,
             onValueChange = setEmail,
             labelText = "Email"
         )
         TextFieldInput(
+            modifier = Modifier.fillMaxWidth(),
             value = password,
             onValueChange = setPassword,
-            labelText = "Password"
+            labelText = "Password",
+            visualTransformation =  PasswordVisualTransformation(),
+            keyboardType = KeyboardType.Password
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -93,7 +102,7 @@ fun SignInScreen() {
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ },
+            onClick = onSignInClick,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             )
@@ -106,7 +115,7 @@ fun SignInScreen() {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(text = "Don't have an Account?")
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = onSignUpClick) {
                 Text(text = "Sign Up")
             }
         }
@@ -121,6 +130,6 @@ fun SignInScreen() {
 @Composable
 fun SignInScreenPreview() {
     StarbucksTheme {
-        SignInScreen()
+        SignInScreen({}, {})
     }
 }

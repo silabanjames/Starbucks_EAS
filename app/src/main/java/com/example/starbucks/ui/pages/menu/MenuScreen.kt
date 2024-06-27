@@ -1,5 +1,6 @@
 package com.example.starbucks.ui.pages.menu
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -21,10 +23,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.StarbucksTheme
 import com.example.starbucks.data.MenuRepository
+import com.example.starbucks.ui.components.BottomNavigationBar
 import com.example.starbucks.ui.components.MenuCard
 import com.example.starbucks.ui.components.TextFieldInput
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun MenuActivity(
+    navHostController: NavHostController
+) {
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController = navHostController )
+        }
+    ) {
+        MenuScreen()
+    }
+}
 
 @Composable
 fun MenuScreen() {
@@ -37,7 +56,12 @@ fun MenuScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp)
+            .padding(
+                start = 32.dp,
+                top = 32.dp,
+                end = 32.dp,
+                bottom = 50.dp
+            )
     ) {
         Text(
             text = "Welcome \uD83D\uDC4B",
@@ -65,6 +89,7 @@ fun MenuScreen() {
                 items(menu) { photo ->
                     MenuCard(menu = photo)
                 }
+                item { Spacer(modifier = Modifier.padding(20.dp)) }
             },
             modifier = Modifier.fillMaxSize()
         )
@@ -79,5 +104,17 @@ fun MenuScreen() {
 fun MenuScreenPreview() {
     StarbucksTheme {
         MenuScreen()
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun MenuActivityPreview() {
+    val navController = rememberNavController()
+    StarbucksTheme {
+        MenuActivity(navController)
     }
 }

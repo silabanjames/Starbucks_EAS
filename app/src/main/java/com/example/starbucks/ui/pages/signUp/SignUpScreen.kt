@@ -1,6 +1,5 @@
 package com.example.starbucks.ui.pages.signUp
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,10 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,11 +21,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,9 +40,9 @@ import com.example.starbucks.ui.components.TextFieldInput
 @Composable
 fun SignUpScreen(
     onSignUpClick: () -> Unit,
-    onLoginClick: () -> Unit,
-    onPolicyClick: () -> Unit,
-    onPrivacyClick: () -> Unit
+    onSignInClick: () -> Unit,
+//    onPolicyClick: () -> Unit,
+//    onPrivacyClick: () -> Unit
 ) {
     val (email, setEmail) = rememberSaveable {
         mutableStateOf("")
@@ -54,11 +52,11 @@ fun SignUpScreen(
         mutableStateOf("")
     }
 
-    val (agree, onAgreeChange) = rememberSaveable {
-        mutableStateOf(false)
-    }
+//    val (agree, onAgreeChange) = rememberSaveable {
+//        mutableStateOf(false)
+//    }
 
-    val context = LocalContext.current
+//    val context = LocalContext.current
 
 
     Column(
@@ -101,7 +99,9 @@ fun SignUpScreen(
         TextFieldInput(
             value = password,
             onValueChange = setPassword,
-            labelText = "Password"
+            labelText = "Password",
+            visualTransformation =  PasswordVisualTransformation(),
+            keyboardType = KeyboardType.Password
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -110,44 +110,45 @@ fun SignUpScreen(
         ) {
             val privacyText = "Privacy"
             val policyText = "Policy"
-            val annotatedString = buildAnnotatedString {
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-                    append("I agree with")
-                }
-                append(" ")
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                    pushStringAnnotation(tag = privacyText, annotation = privacyText)
-                    append(privacyText)
-                }
-                append(" And ")
-                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                    pushStringAnnotation(tag = policyText, annotation = policyText)
-                    append(policyText)
-                }
-            }
+//            val annotatedString = buildAnnotatedString {
+//                withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+//                    append("I agree with")
+//                }
+//                append(" ")
+//                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+//                    pushStringAnnotation(tag = privacyText, annotation = privacyText)
+//                    append(privacyText)
+//                }
+//                append(" And ")
+//                withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+//                    pushStringAnnotation(tag = policyText, annotation = policyText)
+//                    append(policyText)
+//                }
+//            }
 
-            Checkbox(checked = agree, onCheckedChange = onAgreeChange)
-            ClickableText(
-                annotatedString
-            ) {offset ->
-                annotatedString.getStringAnnotations(offset, offset).forEach {
-                    when(it.tag){
-                        privacyText -> {
-                            Toast.makeText(context, "Privacy Text Clicked", Toast.LENGTH_SHORT).show()
-                            onPrivacyClick()
-                        }
-
-                        policyText -> {
-                            Toast.makeText(context, "Policy Text Clicked", Toast.LENGTH_SHORT).show()
-                            onPolicyClick()
-                        }
-                    }
-                }
-            }
+//            Checkbox(checked = agree, onCheckedChange = onAgreeChange)
+//            ClickableText(
+//                annotatedString
+//            ) {offset ->
+//                annotatedString.getStringAnnotations(offset, offset).forEach {
+//                    when(it.tag){
+//                        privacyText -> {
+//                            Toast.makeText(context, "Privacy Text Clicked", Toast.LENGTH_SHORT).show()
+//                            onPrivacyClick()
+//                        }
+//
+//                        policyText -> {
+//                            Toast.makeText(context, "Policy Text Clicked", Toast.LENGTH_SHORT).show()
+//                            onPolicyClick()
+//                        }
+//                    }
+//                }
+//            }
         }
+        Spacer(modifier = Modifier.size(20.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ },
+            onClick = onSignUpClick,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             )
@@ -163,7 +164,7 @@ fun SignUpScreen(
                 text = "Already have an account?",
                 fontSize = 14.sp
             )
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = onSignInClick) {
                 Text(
                     text = "Sign In",
                     fontSize = 14.sp
@@ -181,6 +182,6 @@ fun SignUpScreen(
 @Composable
 fun SignUpScreenPreview() {
     StarbucksTheme {
-        SignUpScreen({}, {}, {}, {})
+        SignUpScreen({}, {})
     }
 }
